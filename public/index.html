@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loyalty, Referral &amp; Subscription CLV Model · Adela Lam</title>
+<meta name="description" content="See what loyalty, referral, replenishment subscriptions and paid membership add to customer lifetime value, net of their costs, and how fast each customer pays back.">
+<meta property="og:title" content="Loyalty, Referral & Subscription CLV Model">
+<meta property="og:description" content="What each retention program adds to customer lifetime value, net of its costs. Built by Adela Lam.">
+<meta property="og:image" content="/og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="/">CLV<span>Model</span></a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="https://github.com/adela-lam/loyalty-clv-model" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://adelawlam.wordpress.com" target="_blank" rel="noopener">Adela Lam ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow"><span class="rule"></span>Open-source marketing tool</div>
+    <h1>What is each customer <em>really worth?</em></h1>
+    <p class="lede">Model what a loyalty program, referrals, replenishment subscriptions and a paid membership add to customer lifetime value, after rewards, discounts, perks and platform fees. Then see which assumption matters most before you sign a vendor contract.</p>
+  </section>
+
+  <div class="layout">
+    <aside class="card panel" aria-label="Assumptions">
+      <div class="card-top" style="margin-bottom:6px"><h2 class="card-h">Assumptions</h2><button class="reset" id="reset" type="button">Reset</button></div>
+      <p class="card-sub" style="margin:0 0 10px">Example numbers for a made-up lifestyle brand. Change any of them.</p>
+      <div id="inputs"></div>
+    </aside>
+
+    <div class="results">
+      <section class="kpis" id="kpis" style="margin-top:0" aria-label="Results"></section>
+
+      <section class="card" aria-labelledby="w-h">
+        <h2 id="w-h" class="card-h">Where the extra value comes from</h2>
+        <p class="card-sub">Lifetime value per new customer over the time horizon, today's dollars</p>
+        <div id="waterfall" class="chart"></div>
+      </section>
+
+      <section class="card" aria-labelledby="pb-h">
+        <h2 id="pb-h" class="card-h">Payback</h2>
+        <p class="card-sub">Profit earned per customer to date. A customer pays back once the line passes what it cost to acquire them.</p>
+        <div id="legend" class="legend"></div>
+        <div id="payback" class="chart"></div>
+      </section>
+
+      <section class="card" aria-labelledby="pr-h">
+        <h2 id="pr-h" class="card-h">Program by program</h2>
+        <p class="card-sub">Incremental value is net of rewards, discounts and perks. Platform fees are shown separately.</p>
+        <div class="table-wrap"><table class="ptable" id="programs"></table></div>
+      </section>
+
+      <section class="card" aria-labelledby="s-h">
+        <h2 id="s-h" class="card-h">What matters most</h2>
+        <p class="card-sub">Change in lifetime value if each assumption is 20% lower or higher. Pressure-test the top few before you commit.</p>
+        <div id="tornado" class="chart"></div>
+      </section>
+    </div>
+  </div>
+
+  <section id="how" class="how">
+    <h2>How it works</h2>
+    <p>Everything is modelled for one new customer, month by month, as <strong>contribution</strong> (revenue × margin, after program costs), discounted back to today. Month 0 is the first order.</p>
+    <div class="formula">
+      baseline = first order + Σ (chance still active × repeat orders × order value × margin × discount factor)<br>
+      loyalty = join rate × (member value − baseline value), members buy more often, stay longer and earn rewards<br>
+      referral = expected referrals × (referred customer's value × (1 + premium) − rewards paid)<br>
+      replenishment = adoption × Σ subscription orders × [non-cannibalised share × (margin − discount) − cannibalised share × discount]<br>
+      membership = adoption × (yearly fee − perk cost while members renew + extra orders from members)<br>
+      lifetime value = baseline + programs − platform fees ÷ new customers per month
+    </div>
+    <h3>Assumptions to know</h3>
+    <ul class="ticks">
+      <li>Programs are treated as independent, so their gains add up. In reality they overlap, so treat the total as an upper bound and the per-program numbers as the guide.</li>
+      <li>Referred customers are worth the baseline value plus a premium. Their own referrals aren't counted, which keeps the estimate conservative.</li>
+      <li>Replenishment counts only extra orders. The cannibalisation setting removes orders the customer would have placed anyway at full price.</li>
+      <li>Platform fees are fixed monthly costs, spread across the customers you acquire each month.</li>
+    </ul>
+    <h3>Research behind the defaults</h3>
+    <ul class="ticks">
+      <li><a href="https://journals.sagepub.com/doi/10.1509/jm.75.1.46" target="_blank" rel="noopener">Schmitt, Skiera &amp; Van den Bulte, "Referral Programs and Customer Value", Journal of Marketing (2011)</a>: referred customers were about 16% more valuable, which sets the default referral premium.</li>
+      <li><a href="https://hbr.org/2007/10/how-valuable-is-word-of-mouth" target="_blank" rel="noopener">Kumar, Petersen &amp; Leone, "How Valuable Is Word of Mouth?", Harvard Business Review (2007)</a>: a customer's referral value is separate from their purchase value, and the two should be measured separately.</li>
+      <li><a href="https://hbr.org/1990/09/zero-defections-quality-comes-to-services" target="_blank" rel="noopener">Reichheld &amp; Sasser, "Zero Defections", Harvard Business Review (1990)</a>: small gains in retention compound into large gains in profit.</li>
+      <li><a href="https://doi.org/10.1509/jmkr.41.1.7.25084" target="_blank" rel="noopener">Gupta, Lehmann &amp; Stuart, "Valuing Customers", Journal of Marketing Research (2004)</a>: the retention-based CLV approach used here.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">Built by <a href="https://adelawlam.wordpress.com" target="_blank" rel="noopener">Adela Lam</a> · Brand &amp; marketing leader · Example numbers are made up</div>
+</footer>
+<div id="tip" class="tip" role="tooltip" hidden></div>
+<script type="module" src="/app.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

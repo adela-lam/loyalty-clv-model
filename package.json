@@ -1,0 +1,11 @@
+{
+  "name": "loyalty-clv-model",
+  "version": "1.0.0",
+  "description": "What loyalty, referral and subscription programs add to customer lifetime value, net of their costs.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "npx --yes serve public -l 3000",
+    "test": "node --test"
+  }
+}
