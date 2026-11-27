@@ -1,4 +1,8 @@
+import { inject } from 'https://esm.sh/@vercel/analytics@2.0.1';
 import { DEFAULTS, run, sensitivity } from './model.js';
+
+// Initialize Vercel Web Analytics
+inject();
 
 const $ = s => document.querySelector(s);
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
